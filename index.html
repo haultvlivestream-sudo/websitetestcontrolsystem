@@ -11,8 +11,6 @@
             --card-bg: #ffffff;
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
-            --danger: #ef4444;
-            --danger-hover: #dc2626;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
@@ -32,8 +30,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            padding: 2rem 1rem;
+            align-items: center;
         }
 
         /* --- LOCK SCREEN --- */
@@ -46,7 +43,6 @@
             max-width: 380px;
             text-align: center;
             border: 1px solid var(--border-color);
-            margin-top: 10vh;
         }
 
         #lock-screen h2 {
@@ -97,7 +93,7 @@
         }
 
         .error-msg {
-            color: var(--danger);
+            color: #ef4444;
             font-size: 0.85rem;
             margin-top: 0.5rem;
             display: none;
@@ -108,6 +104,7 @@
             display: none;
             width: 100%;
             max-width: 1000px;
+            padding: 2rem 1rem;
         }
 
         header {
@@ -115,15 +112,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--card-bg);
-            padding: 1.25rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
         }
 
         header h1 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             color: var(--text-main);
         }
 
@@ -131,18 +123,10 @@
             color: var(--primary);
         }
 
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-        }
-
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.25rem;
-            margin-bottom: 2.5rem;
         }
 
         .card {
@@ -198,73 +182,6 @@
         .card-desc {
             font-size: 0.8rem;
             color: var(--text-muted);
-        }
-
-        /* --- RIWAYAT SECTION --- */
-        .history-container {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .history-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-
-        .history-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-main);
-        }
-
-        .history-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .btn-cancel {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-cancel:hover {
-            background-color: var(--danger-hover);
-        }
-
-        .empty-history {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            padding: 1rem 0;
         }
 
         /* --- MODAL INPUT --- */
@@ -359,12 +276,11 @@
     <div id="dashboard">
         <header>
             <h1>Control Panel <span>IHYA' 7 TV</span></h1>
-            <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; font-weight:600;">Keluar</button>
+            <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem;">Keluar</button>
         </header>
 
-        <div class="section-title">Pilih Server Live Workflow:</div>
         <div class="grid-container">
-            <!-- SLOT 1 SAMPAI 10 -->
+            <!-- SLOT 1 -->
             <div class="card" onclick="openModal('1. Live Fix Tertinggi', 'livefixtertinggi.yml')">
                 <span class="card-number">01</span>
                 <div class="card-content">
@@ -374,6 +290,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 2 -->
             <div class="card" onclick="openModal('2. Live Fix Agust Logo Kiri Atas', 'Scriptpercobaan.yml')">
                 <span class="card-number">02</span>
                 <div class="card-content">
@@ -383,6 +300,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 3 -->
             <div class="card" onclick="openModal('3. Live Khusus Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
                 <span class="card-number">03</span>
                 <div class="card-content">
@@ -392,6 +310,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 4 -->
             <div class="card" onclick="openModal('4. Live Server 4', 'live4.yml')">
                 <span class="card-number">04</span>
                 <div class="card-content">
@@ -401,6 +320,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 5 -->
             <div class="card" onclick="openModal('5. Live Server 5', 'live5.yml')">
                 <span class="card-number">05</span>
                 <div class="card-content">
@@ -410,6 +330,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 6 -->
             <div class="card" onclick="openModal('6. Live Server 6', 'live6.yml')">
                 <span class="card-number">06</span>
                 <div class="card-content">
@@ -419,6 +340,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 7 -->
             <div class="card" onclick="openModal('7. Live Server 7', 'live7.yml')">
                 <span class="card-number">07</span>
                 <div class="card-content">
@@ -428,6 +350,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 8 -->
             <div class="card" onclick="openModal('8. Live Server 8', 'live8.yml')">
                 <span class="card-number">08</span>
                 <div class="card-content">
@@ -437,6 +360,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 9 -->
             <div class="card" onclick="openModal('9. Live Server 9', 'live9.yml')">
                 <span class="card-number">09</span>
                 <div class="card-content">
@@ -446,6 +370,7 @@
                 </div>
             </div>
 
+            <!-- SLOT 10 -->
             <div class="card" onclick="openModal('10. Live Server 10', 'live10.yml')">
                 <span class="card-number">10</span>
                 <div class="card-content">
@@ -453,14 +378,6 @@
                     <div class="card-title">10. Live Server 10</div>
                     <div class="card-desc">Target Workflow: live10.yml</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- RIWAYAT STREAMING -->
-        <div class="section-title">Riwayat Live Aktif & Terakhir (Maks 15)</div>
-        <div class="history-container">
-            <div id="history-list" class="history-list">
-                <div class="empty-history">Belum ada riwayat live streaming.</div>
             </div>
         </div>
     </div>
@@ -480,12 +397,6 @@
             <form id="live-form" onsubmit="triggerGithubAction(event)">
                 <input type="hidden" id="selected-yml">
                 
-                <!-- KOLOM NAMA LIVE (NEW) -->
-                <div class="form-group">
-                    <label for="live-name">Nama Live / Acara (Opsional)</label>
-                    <input type="text" id="live-name" placeholder="Kosongkan = Untitled - Tanggal - Jam">
-                </div>
-
                 <div class="form-group">
                     <label for="yt-url">Link Sumber Video YouTube</label>
                     <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=..." required>
@@ -503,9 +414,7 @@
 
     <script>
         let userPin = "";
-        let liveHistory = []; // Maksimal 15 items
 
-        // VERIFIKASI PIN
         async function unlockDashboard() {
             const input = document.getElementById('pin-input').value;
             const errorMsg = document.getElementById('error-msg');
@@ -532,7 +441,6 @@
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     errorMsg.style.display = 'none';
-                    renderHistory();
                 } else {
                     errorMsg.innerText = "PIN Salah!";
                     errorMsg.style.display = 'block';
@@ -558,7 +466,6 @@
             if (e.key === 'Enter') unlockDashboard();
         });
 
-        // MODAL HANDLER
         function openModal(title, ymlFile) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('yml-display').innerText = ymlFile;
@@ -571,23 +478,13 @@
             document.getElementById('live-form').reset();
         }
 
-        // TRIGGER LIVE
         async function triggerGithubAction(e) {
             e.preventDefault();
             
             const targetYml = document.getElementById('selected-yml').value;
-            let customName = document.getElementById('live-name').value.trim();
             const ytUrl = document.getElementById('yt-url').value;
             const rtmpKey = document.getElementById('rtmp-key').value;
             const btn = document.getElementById('submit-btn');
-
-            // Format tanggal & jam default jika Nama Live kosong
-            const now = new Date();
-            const timeStr = now.toLocaleDateString('id-ID') + ' - ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            
-            if (!customName) {
-                customName = `Untitled - ${timeStr}`;
-            }
 
             btn.innerText = "Memproses Ke GitHub...";
             btn.disabled = true;
@@ -598,4 +495,32 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         pin: userPin,
-      
+                        targetYml: targetYml,
+                        ytUrl: ytUrl,
+                        rtmpKey: rtmpKey
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(`BERHASIL!\n\n${result.message}`);
+                    closeModal();
+                } else {
+                    alert(`GAGAL: ${result.message}`);
+                    if (response.status === 401) {
+                        logout();
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan koneksi server.");
+            } finally {
+                btn.innerText = "Jalankan Live";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+    </html>
+            
