@@ -3,9 +3,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { pin, runId } = req.body;
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { pin, runId } = body;
     const SERVER_PIN = process.env.WEB_PIN;
-    if (!SERVER_PIN || pin !== SERVER_PIN) {
+    if (!SERVER_PIN || String(pin).trim() !== String(SERVER_PIN).trim()) {
         return res.status(401).json({ message: 'PIN Akses Salah!' });
     }
 
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
         });
 
         if (response.ok || response.status === 202) {
-            return res.status(200).json({ success: true, message: "Berhasil mengirimkan perintah Cancel ke GitHub." });
+            return res.status(200).json({ success: true, message: "Berhasil menghentikan live." });
         } else {
             const errData = await response.json();
             return res.status(response.status).json({ message: errData.message || "Gagal membatalkan workflow." });
@@ -32,5 +33,5 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan server.' });
     }
-        }
+                }
             
