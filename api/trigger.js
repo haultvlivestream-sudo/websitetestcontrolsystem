@@ -1,5 +1,7 @@
 export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Method Not Allowed' });
+    }
 
     const { pin, targetYml, ytUrl, rtmpKey } = req.body;
 
@@ -10,6 +12,10 @@ export default async function handler(req, res) {
     const GITHUB_TOKEN = process.env.GH_PAT_TOKEN;
     const REPO_OWNER = process.env.GH_OWNER;
     const REPO_NAME = process.env.GH_REPO;
+
+    if (!GITHUB_TOKEN || !REPO_OWNER || !REPO_NAME) {
+        return res.status(500).json({ message: 'Environment variables belum lengkap di Vercel!' });
+    }
 
     try {
         const response = await fetch(
@@ -22,7 +28,7 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    ref: 'main', // Sesuaikan jika branch utama Anda 'master'
+                    ref: 'main',
                     inputs: {
                         url_stream: ytUrl,
                         stream_key: rtmpKey
