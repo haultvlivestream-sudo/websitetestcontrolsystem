@@ -1,24 +1,20 @@
 export default function handler(req, res) {
     if (req.method !== 'POST') {
-        return res.status(405).json({ success: false, message: 'Method Not Allowed' });
+        return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    try {
-        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-        const userPin = String(body?.pin || '').trim();
-        const serverPin = String(process.env.WEB_PIN || '').trim();
+    const { pin } = req.body;
+    // Mengambil PIN murni dari Vercel Environment Variable (WEB_PIN)
+    const SERVER_PIN = process.env.WEB_PIN;
 
-        if (!serverPin) {
-            return res.status(500).json({ success: false, message: 'WEB_PIN belum diatur di Vercel.' });
-        }
+    if (!SERVER_PIN) {
+        return res.status(500).json({ success: false, message: 'WEB_PIN belum diatur di Vercel Secret.' });
+    }
 
-        if (userPin === serverPin) {
-            return res.status(200).json({ success: true, message: 'Akses Diterima' });
-        } else {
-            return res.status(401).json({ success: false, message: 'PIN Salah!' });
-        }
-    } catch (err) {
-        return res.status(400).json({ success: false, message: 'Format data request tidak valid.' });
+    // Cek apakah PIN dari user cocok dengan Secret di Vercel
+    if (pin === SERVER_PIN) {
+        return res.status(200).json({ success: true });
+    } else {
+        return res.status(401).json({ success: false, message: 'PIN Salah!' });
     }
-    }
-    
+}
