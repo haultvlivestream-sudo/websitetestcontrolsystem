@@ -259,51 +259,6 @@
             margin-bottom: 1rem;
             display: inline-block;
         }
-
-        /* --- RIWAYAT & CANCEL WORKFLOW --- */
-        .history-section {
-            margin-top: 2.5rem;
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .btn-refresh {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
-
-        th {
-            text-align: left;
-            padding: 8px;
-            border-bottom: 2px solid var(--border-color);
-            color: var(--text-muted);
-        }
-
-        td {
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
-        }
     </style>
 </head>
 <body>
@@ -425,31 +380,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- RIWAYAT WORKFLOW & TOMBOL CANCEL -->
-        <div class="history-section">
-            <div class="history-header">
-                <h2 style="font-size: 1.2rem;">Riwayat & Status Workflow</h2>
-                <button class="btn-refresh" onclick="fetchWorkflowRuns()">🔄 Refresh Status</button>
-            </div>
-
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Workflow / Jam</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="workflow-runs-list">
-                        <tr>
-                            <td colspan="3" style="text-align: center; color: var(--text-muted);">Klik Refresh untuk memuat...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 
     <!-- MODAL FORM -->
@@ -485,7 +415,7 @@
     <script>
         let userPin = "";
 
-        // 1. FUNGSI UNLOCK: VERIFIKASI PIN DENGAN SERVER VERCEL DAHULU
+        // PERBAIKAN UTAMA: MEMERIKSA PIN LANGSUNG KE BACKEND SEBELUM MEMBUKA DASHBOARD
         async function unlockDashboard() {
             const input = document.getElementById('pin-input').value.trim();
             const errorMsg = document.getElementById('error-msg');
@@ -498,26 +428,27 @@
             }
 
             errorMsg.style.display = 'none';
-            loginBtn.innerText = "Verifikasi PIN...";
+            loginBtn.innerText = "Memeriksa...";
             loginBtn.disabled = true;
 
             try {
-                // Menguji kebenaran PIN melalui endpoint /api/status
+                // Mengirim PIN ke backend Vercel untuk dicek kecocokannya dengan WEB_PIN
                 const response = await fetch(`/api/status?pin=${encodeURIComponent(input)}`);
                 const result = await response.json();
 
                 if (response.ok) {
-                    userPin = input; // Menyimpan PIN jika benar
+                    // PIN BENAR
+                    userPin = input;
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
-                    renderWorkflowRuns(result.runs);
                 } else {
+                    // PIN SALAH
                     errorMsg.innerText = result.message || "PIN Salah!";
                     errorMsg.style.display = 'block';
                 }
             } catch (err) {
                 console.error(err);
-                errorMsg.innerText = "Gagal terhubung ke API Vercel.";
+                errorMsg.innerText = "Gagal terhubung ke API Server.";
                 errorMsg.style.display = 'block';
             } finally {
                 loginBtn.innerText = "Masuk";
@@ -548,7 +479,6 @@
             document.getElementById('live-form').reset();
         }
 
-        // 2. FUNGSI MENJALANKAN ACTION
         async function triggerGithubAction(e) {
             e.preventDefault();
             
@@ -577,11 +507,10 @@
                 if (response.ok) {
                     alert(`BERHASIL!\n\n${result.message}`);
                     closeModal();
-                    fetchWorkflowRuns();
                 } else {
                     alert(`GAGAL: ${result.message}`);
                     if (response.status === 401) {
-                        logout();
+                        logout(); // Kembali ke lockscreen jika PIN tidak valid
                     }
                 }
             } catch (error) {
@@ -592,7 +521,7 @@
                 btn.disabled = false;
             }
         }
-
-        // 3. FUNGSI AMBIL LIST WORKFLOW DARI GITHUB
-        async function fetchWorkflowRuns() {
+    </script>
+</body>
+    </html>
     
