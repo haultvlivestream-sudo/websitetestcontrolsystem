@@ -11,6 +11,8 @@
             --card-bg: #ffffff;
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
@@ -103,7 +105,7 @@
         #dashboard {
             display: none;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             padding: 2rem 1rem;
         }
 
@@ -127,6 +129,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.25rem;
+            margin-bottom: 2.5rem;
         }
 
         .card {
@@ -182,6 +185,77 @@
         .card-desc {
             font-size: 0.8rem;
             color: var(--text-muted);
+        }
+
+        /* --- RIWAYAT SECTION --- */
+        .history-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .history-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .history-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+
+        }
+
+        .history-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-cancel {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--danger-hover);
         }
 
         /* --- MODAL INPUT --- */
@@ -380,6 +454,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- RIWAYAT WORKFLOWS -->
+        <div class="history-section">
+            <div class="history-header">
+                <h2>Riwayat Workflow / Stream Aktif</h2>
+                <button onclick="loadHistory()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.85rem;">Refresh Riwayat</button>
+            </div>
+            <div id="history-list" class="history-list">
+                <p style="text-align:center; color:var(--text-muted);">Memuat riwayat...</p>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL FORM -->
@@ -397,6 +482,11 @@
             <form id="live-form" onsubmit="triggerGithubAction(event)">
                 <input type="hidden" id="selected-yml">
                 
+                <div class="form-group">
+                    <label for="live-name">Nama / Judul Live (Opsional)</label>
+                    <input type="text" id="live-name" placeholder="Contoh: Majlis Rutin (Kosongkan = Untitled)">
+                </div>
+
                 <div class="form-group">
                     <label for="yt-url">Link Sumber Video YouTube</label>
                     <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=..." required>
@@ -441,6 +531,7 @@
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     errorMsg.style.display = 'none';
+                    loadHistory();
                 } else {
                     errorMsg.innerText = "PIN Salah!";
                     errorMsg.style.display = 'block';
@@ -482,6 +573,7 @@
             e.preventDefault();
             
             const targetYml = document.getElementById('selected-yml').value;
+            const liveName = document.getElementById('live-name').value;
             const ytUrl = document.getElementById('yt-url').value;
             const rtmpKey = document.getElementById('rtmp-key').value;
             const btn = document.getElementById('submit-btn');
@@ -496,6 +588,7 @@
                     body: JSON.stringify({
                         pin: userPin,
                         targetYml: targetYml,
+                        liveName: liveName,
                         ytUrl: ytUrl,
                         rtmpKey: rtmpKey
                     })
@@ -506,22 +599,7 @@
                 if (response.ok) {
                     alert(`BERHASIL!\n\n${result.message}`);
                     closeModal();
+                    loadHistory();
                 } else {
                     alert(`GAGAL: ${result.message}`);
-                    if (response.status === 401) {
-                        logout();
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Terjadi kesalahan koneksi server.");
-            } finally {
-                btn.innerText = "Jalankan Live";
-                btn.disabled = false;
-            }
-        }
-    </script>
-</body>
-    </html>
-
-    
+          
