@@ -3,15 +3,14 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { pin, targetYml, liveName, ytUrl, rtmpKey } = req.body;
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const { pin, targetYml, liveName, ytUrl, rtmpKey } = body;
 
-    // 1. Verifikasi PIN
     const SERVER_PIN = process.env.WEB_PIN;
-    if (!SERVER_PIN || pin !== SERVER_PIN) {
+    if (!SERVER_PIN || String(pin).trim() !== String(SERVER_PIN).trim()) {
         return res.status(401).json({ message: 'PIN Akses Salah!' });
     }
 
-    // 2. Ambil Token GitHub PAT
     const GITHUB_USERNAME = "haultvlivestream-sudo";
     const GITHUB_REPO = "liveyt-denganlogo2026-amanlag";
     const GITHUB_TOKEN = process.env.GH_PAT_TOKEN;
@@ -20,7 +19,6 @@ export default async function handler(req, res) {
         return res.status(500).json({ message: 'Token GH_PAT_TOKEN belum diatur di Vercel.' });
     }
 
-    // Format Jam WIB (Asia/Jakarta)
     const nowWib = new Date().toLocaleTimeString('id-ID', {
         timeZone: 'Asia/Jakarta',
         hour: '2-digit',
@@ -28,7 +26,6 @@ export default async function handler(req, res) {
         hour12: false
     }).replace('.', ':');
 
-    // Jika liveName kosong, pakai nama default
     const finalTitle = (liveName && liveName.trim() !== '') 
         ? liveName.trim() 
         : `Untitled - ${nowWib} WIB`;
@@ -47,7 +44,7 @@ export default async function handler(req, res) {
                 inputs: {
                     link_youtube: ytUrl,
                     kunci_rtmp: rtmpKey,
-                    live_title: finalTitle // Mengirimkan judul ke workflow jika diperlukan
+                    live_title: finalTitle
                 }
             })
         });
@@ -55,7 +52,7 @@ export default async function handler(req, res) {
         if (response.ok || response.status === 204) {
             return res.status(200).json({ 
                 success: true, 
-                message: `Live "${finalTitle}" dengan workflow '${targetYml}' berhasil dijalankan!` 
+                message: `Live "${finalTitle}" berhasil dijalankan!` 
             });
         } else {
             const errData = await response.json();
@@ -64,5 +61,4 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan koneksi server.' });
     }
-                                    }
-                
+                }
