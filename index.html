@@ -234,7 +234,6 @@
         .history-title {
             font-weight: 600;
             font-size: 0.95rem;
-
         }
 
         .history-meta {
@@ -342,7 +341,7 @@
         <h2>Control System</h2>
         <p>Masukkan 6 digit PIN Akses</p>
         <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus>
-        <button class="btn-submit" onclick="unlockDashboard()">Masuk</button>
+        <button id="pin-btn" class="btn-submit" onclick="unlockDashboard()">Masuk</button>
         <div id="error-msg" class="error-msg">PIN Salah! Silakan coba lagi.</div>
     </div>
 
@@ -354,7 +353,6 @@
         </header>
 
         <div class="grid-container">
-            <!-- SLOT 1 -->
             <div class="card" onclick="openModal('1. Live Fix Tertinggi', 'livefixtertinggi.yml')">
                 <span class="card-number">01</span>
                 <div class="card-content">
@@ -364,7 +362,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 2 -->
             <div class="card" onclick="openModal('2. Live Fix Agust Logo Kiri Atas', 'Scriptpercobaan.yml')">
                 <span class="card-number">02</span>
                 <div class="card-content">
@@ -374,7 +371,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 3 -->
             <div class="card" onclick="openModal('3. Live Khusus Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
                 <span class="card-number">03</span>
                 <div class="card-content">
@@ -384,7 +380,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 4 -->
             <div class="card" onclick="openModal('4. Live Server 4', 'live4.yml')">
                 <span class="card-number">04</span>
                 <div class="card-content">
@@ -394,7 +389,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 5 -->
             <div class="card" onclick="openModal('5. Live Server 5', 'live5.yml')">
                 <span class="card-number">05</span>
                 <div class="card-content">
@@ -404,7 +398,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 6 -->
             <div class="card" onclick="openModal('6. Live Server 6', 'live6.yml')">
                 <span class="card-number">06</span>
                 <div class="card-content">
@@ -414,7 +407,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 7 -->
             <div class="card" onclick="openModal('7. Live Server 7', 'live7.yml')">
                 <span class="card-number">07</span>
                 <div class="card-content">
@@ -424,7 +416,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 8 -->
             <div class="card" onclick="openModal('8. Live Server 8', 'live8.yml')">
                 <span class="card-number">08</span>
                 <div class="card-content">
@@ -434,7 +425,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 9 -->
             <div class="card" onclick="openModal('9. Live Server 9', 'live9.yml')">
                 <span class="card-number">09</span>
                 <div class="card-content">
@@ -444,7 +434,6 @@
                 </div>
             </div>
 
-            <!-- SLOT 10 -->
             <div class="card" onclick="openModal('10. Live Server 10', 'live10.yml')">
                 <span class="card-number">10</span>
                 <div class="card-content">
@@ -508,7 +497,7 @@
         async function unlockDashboard() {
             const input = document.getElementById('pin-input').value;
             const errorMsg = document.getElementById('error-msg');
-            const btn = document.querySelector('#lock-screen .btn-submit');
+            const btn = document.getElementById('pin-btn');
 
             if (!input) {
                 errorMsg.innerText = "PIN Wajib Diisi!";
@@ -599,7 +588,14 @@
                 if (response.ok) {
                     alert(`BERHASIL!\n\n${result.message}`);
                     closeModal();
-                    loadHistory();
+                    setTimeout(loadHistory, 2000);
                 } else {
                     alert(`GAGAL: ${result.message}`);
-          
+                    if (response.status === 401) logout();
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan koneksi server.");
+            } finally {
+                btn.innerText = "Jalankan Live";
+ 
