@@ -501,7 +501,7 @@
 
     <script>
         let userPin = "";
-        let liveHistory = [];
+        let liveHistory = JSON.parse(localStorage.getItem('ihya_live_history') || '[]');
 
         // VERIFIKASI PIN
         async function unlockDashboard() {
@@ -598,5 +598,4 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         pin: userPin,
-                        targetYml: targetYml,
-                 
+    
