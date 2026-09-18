@@ -3,9 +3,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
 
-    const { pin } = req.body;
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const pin = body?.pin;
     const SERVER_PIN = process.env.WEB_PIN;
-    if (!SERVER_PIN || pin !== SERVER_PIN) {
+    if (!SERVER_PIN || String(pin).trim() !== String(SERVER_PIN).trim()) {
         return res.status(401).json({ message: 'PIN Akses Salah!' });
     }
 
@@ -14,7 +15,6 @@ export default async function handler(req, res) {
     const GITHUB_TOKEN = process.env.GH_PAT_TOKEN;
 
     try {
-        // Ambil 15 workflow runs terakhir dari repository
         const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/actions/runs?per_page=15`, {
             headers: {
                 'Accept': 'application/vnd.github+json',
@@ -24,12 +24,11 @@ export default async function handler(req, res) {
         });
 
         if (!response.ok) {
-            return res.status(response.status).json({ message: "Gagal mengambil riwayat dari GitHub." });
+            return res.status(response.status).json({ message: "Gagal mengambil riwayat." });
         }
 
         const data = await response.json();
         
-        // Transformasikan data agar mudah ditampilkan di frontend
         const history = data.workflow_runs.map(run => {
             const dateObj = new Date(run.created_at);
             const wibTime = dateObj.toLocaleTimeString('id-ID', {
@@ -40,14 +39,20 @@ export default async function handler(req, res) {
             }).replace('.', ':') + " WIB";
 
             const ymlPath = run.path.split('/').pop();
+            
+            // Mengambil judul dari input dispatches jika tersedia, atau fallback nama bawaan
+            let displayTitle = run.name;
+            if (!displayTitle || displayTitle === ymlPath) {
+                displayTitle = `Untitled - ${wibTime}`;
+            }
 
             return {
                 runId: run.id,
-                title: run.display_title || `Untitled - ${wibTime}`,
+                title: displayTitle,
                 yml: ymlPath,
                 time: wibTime,
-                status: run.status, // queued, in_progress, completed
-                conclusion: run.conclusion // success, cancelled, failure, dll
+                status: run.status,
+                conclusion: run.conclusion
             };
         });
 
@@ -55,5 +60,5 @@ export default async function handler(req, res) {
     } catch (error) {
         return res.status(500).json({ message: 'Terjadi kesalahan koneksi server.' });
     }
-              }
-          
+            }
+    
