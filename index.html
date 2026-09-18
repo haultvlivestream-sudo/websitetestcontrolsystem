@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control System - IHYA' 7 TV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        #lock-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        #lock-screen p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .pin-input {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .pin-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        /* --- MAIN DASHBOARD --- */
+        #dashboard {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            color: var(--text-main);
+        }
+
+        header span {
+            color: var(--primary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .card-number {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            z-index: 0;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- RIWAYAT SECTION --- */
+        .history-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1rem;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            gap: 1rem;
+        }
+
+        .history-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .history-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .history-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-cancel {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-cancel:hover {
+            background-color: var(--danger-hover);
+        }
+
+        .empty-history {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            padding: 1rem;
+        }
+
+        /* --- MODAL INPUT --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .yml-indicator {
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #475569;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOCK SCREEN -->
+    <div id="lock-screen">
+        <h2>Control System</h2>
+        <p>Masukkan 6 digit PIN Akses</p>
+        <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus>
+        <button class="btn-submit" onclick="unlockDashboard()">Masuk</button>
+        <div id="error-msg" class="error-msg">PIN Salah! Silakan coba lagi.</div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard">
+        <header>
+            <h1>Control Panel <span>IHYA' 7 TV</span></h1>
+            <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem;">Keluar</button>
+        </header>
+
+        <h2 class="section-title">Workflow Streaming</h2>
+        <div class="grid-container">
+            <!-- SLOT 1 -->
+            <div class="card" onclick="openModal('1. Live Fix Tertinggi', 'livefixtertinggi.yml')">
+                <span class="card-number">01</span>
+                <div class="card-content">
+                    <span class="card-badge">livefixtertinggi.yml</span>
+                    <div class="card-title">1. Live Fix Tertinggi</div>
+                    <div class="card-desc">Target Workflow: livefixtertinggi.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 2 -->
+            <div class="card" onclick="openModal('2. Live Fix Agust Logo Kiri Atas', 'Scriptpercobaan.yml')">
+                <span class="card-number">02</span>
+                <div class="card-content">
+                    <span class="card-badge">Scriptpercobaan.yml</span>
+                    <div class="card-title">2. Live Fix Agust Logo Kiri Atas</div>
+                    <div class="card-desc">Target Workflow: Scriptpercobaan.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 3 -->
+            <div class="card" onclick="openModal('3. Live Khusus Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
+                <span class="card-number">03</span>
+                <div class="card-content">
+                    <span class="card-badge">scriptkhususlivehabibomarcom.yml</span>
+                    <div class="card-title">3. Live Khusus Habib Umar</div>
+                    <div class="card-desc">Target Workflow: scriptkhususlivehabibomarcom.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 4 -->
+            <div class="card" onclick="openModal('4. Live Server 4', 'live4.yml')">
+                <span class="card-number">04</span>
+                <div class="card-content">
+                    <span class="card-badge">live4.yml</span>
+                    <div class="card-title">4. Live Server 4</div>
+                    <div class="card-desc">Target Workflow: live4.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 5 -->
+            <div class="card" onclick="openModal('5. Live Server 5', 'live5.yml')">
+                <span class="card-number">05</span>
+                <div class="card-content">
+                    <span class="card-badge">live5.yml</span>
+                    <div class="card-title">5. Live Server 5</div>
+                    <div class="card-desc">Target Workflow: live5.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 6 -->
+            <div class="card" onclick="openModal('6. Live Server 6', 'live6.yml')">
+                <span class="card-number">06</span>
+                <div class="card-content">
+                    <span class="card-badge">live6.yml</span>
+                    <div class="card-title">6. Live Server 6</div>
+                    <div class="card-desc">Target Workflow: live6.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 7 -->
+            <div class="card" onclick="openModal('7. Live Server 7', 'live7.yml')">
+                <span class="card-number">07</span>
+                <div class="card-content">
+                    <span class="card-badge">live7.yml</span>
+                    <div class="card-title">7. Live Server 7</div>
+                    <div class="card-desc">Target Workflow: live7.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 8 -->
+            <div class="card" onclick="openModal('8. Live Server 8', 'live8.yml')">
+                <span class="card-number">08</span>
+                <div class="card-content">
+                    <span class="card-badge">live8.yml</span>
+                    <div class="card-title">8. Live Server 8</div>
+                    <div class="card-desc">Target Workflow: live8.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 9 -->
+            <div class="card" onclick="openModal('9. Live Server 9', 'live9.yml')">
+                <span class="card-number">09</span>
+                <div class="card-content">
+                    <span class="card-badge">live9.yml</span>
+                    <div class="card-title">9. Live Server 9</div>
+                    <div class="card-desc">Target Workflow: live9.yml</div>
+                </div>
+            </div>
+
+            <!-- SLOT 10 -->
+            <div class="card" onclick="openModal('10. Live Server 10', 'live10.yml')">
+                <span class="card-number">10</span>
+                <div class="card-content">
+                    <span class="card-badge">live10.yml</span>
+                    <div class="card-title">10. Live Server 10</div>
+                    <div class="card-desc">Target Workflow: live10.yml</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIWAYAT SECTION -->
+        <h2 class="section-title">Riwayat Workflow Terakhir (Maks. 15)</h2>
+        <div class="history-container">
+            <div id="history-list" class="history-list">
+                <div class="empty-history">Belum ada riwayat workflow.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORM -->
+    <div id="action-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Judul Live</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="yml-indicator">
+                Target Action: <strong id="yml-display">filename.yml</strong>
+            </div>
+
+            <form id="live-form" onsubmit="triggerGithubAction(event)">
+                <input type="hidden" id="selected-yml">
+                
+                <div class="form-group">
+                    <label for="live-name">Nama Live (Opsional)</label>
+                    <input type="text" id="live-name" placeholder="Contoh: Pengajian Minggu Pagi (Default: Untitled Name)">
+                </div>
+
+                <div class="form-group">
+                    <label for="yt-url">Link Sumber Video YouTube</label>
+                    <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rtmp-key">Key RTMP (Stream Key)</label>
+                    <input type="password" id="rtmp-key" placeholder="xxxx-xxxx-xxxx-xxxx" required>
+                </div>
+                
+                <button type="submit" class="btn-submit" id="submit-btn">Jalankan Live</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let userPin = "";
+
+        // Fungsi Memuat Riwayat dari LocalStorage
+        function getHistory() {
+            return JSON.parse(localStorage.getItem('ihya_workflow_history') || '[]');
+        }
+
+        // Fungsi Menyimpan dan Membatasi Maksimal 15 Data
+        function saveHistory(newItem) {
+            let history = getHistory();
+            history.unshift(newItem); // Tambah ke paling atas
+            if (history.length > 15) {
+                history = history.slice(0, 15); // Hapus otomatis yang lama
+            }
+            localStorage.setItem('ihya_workflow_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        // Render Tampilan Riwayat
+        function renderHistory() {
+            const historyList = document.getElementById('history-list');
+            const history = getHistory();
+
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="empty-history">Belum ada riwayat workflow.</div>';
+                return;
+            }
+
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="history-item">
+                    <div class="history-info">
+                        <div class="history-name">${escapeHtml(item.name)}</div>
+                        <div class="history-meta">File: <b>${item.targetYml}</b> | Waktu: ${item.time}</div>
+                    </div>
+                    <button class="btn-cancel" onclick="cancelWorkflow('${item.targetYml}', ${index})">Berhenti Live</button>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        async function unlockDashboard() {
+            const input = document.getElementById('pin-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('#lock-screen .btn-submit');
+
+            if (!input) {
+                errorMsg.innerText = "PIN Wajib Diisi!";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            btn.innerText = "Memeriksa...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: input })
+                });
+
+                if (response.ok) {
+                    userPin = input;
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    errorMsg.style.display = 'none';
+                    renderHistory(); // Muat riwayat saat berhasil masuk
+                } else {
+                    errorMsg.innerText = "PIN Salah!";
+                    errorMsg.style.display = 'block';
+                    document.getElementById('pin-input').value = "";
+                }
+            } catch (error) {
+                errorMsg.innerText = "Terjadi kesalahan koneksi.";
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.innerText = "Masuk";
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            userPin = "";
+            document.getElementById('pin-input').value = "";
+            document.getElementById('lock-screen').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        document.getElementById('pin-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') unlockDashboard();
+        });
+
+        function openModal(title, ymlFile) {
+            document.getElementById('modal-title').innerText = title;
+     
