@@ -17,71 +17,293 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-        /* LOCK SCREEN */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- LOCK SCREEN --- */
         #lock-screen {
-            background: var(--card-bg); padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow);
-            width: 100%; max-width: 380px; text-align: center; border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid var(--border-color);
         }
-        #lock-screen h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary); }
-        #lock-screen p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        #lock-screen h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        #lock-screen p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
         .pin-input {
-            width: 100%; padding: 0.75rem; font-size: 1.5rem; letter-spacing: 0.5rem; text-align: center;
-            border: 2px solid var(--border-color); border-radius: 8px; outline: none; margin-bottom: 1rem; transition: all 0.2s;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
         }
-        .pin-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+
+        .pin-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
         .btn-submit {
-            width: 100%; padding: 0.75rem; background-color: var(--primary); color: white; border: none;
-            border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .btn-submit:hover { background-color: var(--primary-hover); }
-        .error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
 
-        /* DASHBOARD */
-        #dashboard { display: none; width: 100%; max-width: 1000px; padding: 2rem 1rem; }
-        header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
-        header h1 { font-size: 1.75rem; color: var(--text-main); }
-        header span { color: var(--primary); }
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
 
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        /* --- MAIN DASHBOARD --- */
+        #dashboard {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            color: var(--text-main);
+        }
+
+        header span {
+            color: var(--primary);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
         .card {
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem;
-            box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, border-color 0.2s; position: relative; overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover { transform: translateY(-4px); border-color: var(--primary); }
-        .card-number { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; font-weight: 700; color: #f1f5f9; z-index: 0; }
-        .card-content { position: relative; z-index: 1; }
-        .card-badge { display: inline-block; background: #e0e7ff; color: var(--primary); font-size: 0.75rem; font-weight: 600; padding: 4px 8px; border-radius: 6px; margin-bottom: 0.5rem; }
-        .card-title { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.25rem; }
-        .card-desc { font-size: 0.8rem; color: var(--text-muted); }
 
-        /* MODAL */
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .card-number {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            z-index: 0;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* --- MODAL INPUT --- */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 100;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
         }
-        .modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 480px; box-shadow: var(--shadow); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .modal-header h3 { font-size: 1.25rem; }
-        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
-        .form-group input { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; outline: none; }
-        .form-group input:focus { border-color: var(--primary); }
-        .yml-indicator { font-size: 0.8rem; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; color: #475569; margin-bottom: 1rem; display: inline-block; }
 
-        /* RIWAYAT WORKFLOW TABLE */
-        .history-section {
-            margin-top: 2.5rem; background: var(--card-bg); padding: 1.5rem;
-            border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow);
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow);
         }
-        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .btn-refresh { background: var(--primary); color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        th { text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color); color: var(--text-muted); }
-        td { padding: 8px; border-bottom: 1px solid var(--border-color); }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .yml-indicator {
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #475569;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* --- RIWAYAT & CANCEL WORKFLOW --- */
+        .history-section {
+            margin-top: 2.5rem;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-refresh {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
     </style>
 </head>
 <body>
@@ -204,7 +426,7 @@
             </div>
         </div>
 
-        <!-- RIWAYAT WORKFLOW -->
+        <!-- RIWAYAT WORKFLOW & TOMBOL CANCEL -->
         <div class="history-section">
             <div class="history-header">
                 <h2 style="font-size: 1.2rem;">Riwayat & Status Workflow</h2>
@@ -238,7 +460,9 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             
-            <div class="yml-indicator">Target Action: <strong id="yml-display">filename.yml</strong></div>
+            <div class="yml-indicator">
+                Target Action: <strong id="yml-display">filename.yml</strong>
+            </div>
 
             <form id="live-form" onsubmit="triggerGithubAction(event)">
                 <input type="hidden" id="selected-yml">
@@ -261,9 +485,9 @@
     <script>
         let userPin = "";
 
-        // MEMERIKSA PIN LANGSUNG KE BACKEND SEBELUM UNLOCK DASHBOARD
+        // 1. FUNGSI UNLOCK: VERIFIKASI PIN DENGAN SERVER VERCEL DAHULU
         async function unlockDashboard() {
-            const input = document.getElementById('pin-input').value;
+            const input = document.getElementById('pin-input').value.trim();
             const errorMsg = document.getElementById('error-msg');
             const loginBtn = document.getElementById('login-btn');
 
@@ -274,15 +498,16 @@
             }
 
             errorMsg.style.display = 'none';
-            loginBtn.innerText = "Memeriksa...";
+            loginBtn.innerText = "Verifikasi PIN...";
             loginBtn.disabled = true;
 
             try {
+                // Menguji kebenaran PIN melalui endpoint /api/status
                 const response = await fetch(`/api/status?pin=${encodeURIComponent(input)}`);
                 const result = await response.json();
 
                 if (response.ok) {
-                    userPin = input;
+                    userPin = input; // Menyimpan PIN jika benar
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     renderWorkflowRuns(result.runs);
@@ -292,7 +517,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                errorMsg.innerText = "Gagal terhubung ke server API Vercel.";
+                errorMsg.innerText = "Gagal terhubung ke API Vercel.";
                 errorMsg.style.display = 'block';
             } finally {
                 loginBtn.innerText = "Masuk";
@@ -323,6 +548,7 @@
             document.getElementById('live-form').reset();
         }
 
+        // 2. FUNGSI MENJALANKAN ACTION
         async function triggerGithubAction(e) {
             e.preventDefault();
             
@@ -354,7 +580,9 @@
                     fetchWorkflowRuns();
                 } else {
                     alert(`GAGAL: ${result.message}`);
-                    if (response.status === 401) logout();
+                    if (response.status === 401) {
+                        logout();
+                    }
                 }
             } catch (error) {
                 console.error(error);
@@ -365,47 +593,6 @@
             }
         }
 
+        // 3. FUNGSI AMBIL LIST WORKFLOW DARI GITHUB
         async function fetchWorkflowRuns() {
-            const listBody = document.getElementById('workflow-runs-list');
-            listBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Memuat data...</td></tr>';
-
-            try {
-                const response = await fetch(`/api/status?pin=${encodeURIComponent(userPin)}`);
-                const result = await response.json();
-
-                if (!response.ok) {
-                    listBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#ef4444;">${result.message || 'Gagal memuat'}</td></tr>`;
-                    if (response.status === 401) logout();
-                    return;
-                }
-
-                renderWorkflowRuns(result.runs);
-            } catch (err) {
-                console.error(err);
-                listBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#ef4444;">Gagal terhubung ke server.</td></tr>';
-            }
-        }
-
-        function renderWorkflowRuns(runs) {
-            const listBody = document.getElementById('workflow-runs-list');
-            if (!runs || runs.length === 0) {
-                listBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Tidak ada riwayat.</td></tr>';
-                return;
-            }
-
-            listBody.innerHTML = '';
-            runs.forEach(run => {
-                const time = new Date(run.created_at).toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-                
-                let statusBadge = `<span style="padding:2px 8px; border-radius:4px; font-size:0.75rem; background:#e2e8f0;">${run.status}</span>`;
-                if (run.status === 'in_progress') {
-                    statusBadge = `<span style="padding:2px 8px; border-radius:4px; font-size:0.75rem; background:#fef08a; color:#854d0e;">🔴 Running</span>`;
-                } else if (run.status === 'completed') {
-                    statusBadge = run.conclusion === 'success' 
-                        ? `<span style="padding:2px 8px; border-radius:4px; font-size:0.75rem; background:#dcfce7; color:#166534;">✅ Success</span>`
-                        : `<span style="padding:2px 8px; border-radius:4px; font-size:0.75rem; background:#fee2e2; color:#991b1b;">❌ ${run.conclusion}</span>`;
-                }
-
-                let actionBtn = '-';
-                if (run.status === 'in_progress' || run.status === 'queued') {
-                    actionBtn = `<button onclick="cancelWorkflow('${run.id}')" style="background:#ef4444; color:white;
+    
