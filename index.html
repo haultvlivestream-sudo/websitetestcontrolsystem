@@ -19,319 +19,68 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* --- LOCK SCREEN --- */
         #lock-screen {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            border: 1px solid var(--border-color);
+            background: var(--card-bg); padding: 2.5rem; border-radius: 16px; box-shadow: var(--shadow);
+            width: 100%; max-width: 380px; text-align: center; border: 1px solid var(--border-color);
         }
-
-        #lock-screen h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        #lock-screen p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
+        #lock-screen h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--primary); }
+        #lock-screen p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem; }
 
         .pin-input {
-            width: 100%;
-            padding: 0.75rem;
-            font-size: 1.5rem;
-            letter-spacing: 0.5rem;
-            text-align: center;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            outline: none;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
+            width: 100%; padding: 0.75rem; font-size: 1.5rem; letter-spacing: 0.5rem; text-align: center;
+            border: 2px solid var(--border-color); border-radius: 8px; outline: none; margin-bottom: 1rem; transition: all 0.2s;
         }
-
-        .pin-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-        }
+        .pin-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
 
         .btn-submit {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
+            width: 100%; padding: 0.75rem; background-color: var(--primary); color: white; border: none;
+            border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;
         }
+        .btn-submit:hover { background-color: var(--primary-hover); }
+        .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; display: none; font-weight: 500; }
 
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-        }
+        #dashboard { display: none; width: 100%; max-width: 1100px; padding: 2rem 1rem; }
+        header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 1.75rem; color: var(--text-main); }
+        header span { color: var(--primary); }
 
-        .error-msg {
-            color: #ef4444;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        /* --- MAIN DASHBOARD --- */
-        #dashboard {
-            display: none;
-            width: 100%;
-            max-width: 1100px;
-            padding: 2rem 1rem;
-        }
-
-        header {
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            font-size: 1.75rem;
-            color: var(--text-main);
-        }
-
-        header span {
-            color: var(--primary);
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 2.5rem;
-        }
-
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem;
+            box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, border-color 0.2s; position: relative; overflow: hidden;
         }
+        .card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        .card-number { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; font-weight: 700; color: #f1f5f9; z-index: 0; }
+        .card-content { position: relative; z-index: 1; }
+        .card-badge { display: inline-block; background: #e0e7ff; color: var(--primary); font-size: 0.75rem; font-weight: 600; padding: 4px 8px; border-radius: 6px; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.25rem; }
+        .card-desc { font-size: 0.8rem; color: var(--text-muted); }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary);
-        }
+        .history-section { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .history-header h2 { font-size: 1.25rem; }
+        .history-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 500px; overflow-y: auto; }
+        .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; background: #fafafa; }
+        .history-info { display: flex; flex-direction: column; gap: 2px; }
+        .history-title { font-weight: 600; font-size: 0.95rem; }
+        .history-meta { font-size: 0.8rem; color: var(--text-muted); }
 
-        .card-number {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #f1f5f9;
-            z-index: 0;
-        }
+        .btn-cancel { background-color: var(--danger); color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-cancel:hover { background-color: var(--danger-hover); }
 
-        .card-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .card-badge {
-            display: inline-block;
-            background: #e0e7ff;
-            color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
-
-        .card-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* --- RIWAYAT SECTION --- */
-        .history-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .history-header h2 {
-            font-size: 1.25rem;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.85rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: #fafafa;
-        }
-
-        .history-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .history-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .history-meta {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .btn-cancel {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-cancel:hover {
-            background-color: var(--danger-hover);
-        }
-
-        /* --- MODAL INPUT --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(4px);
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 480px;
-            box-shadow: var(--shadow);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-header h3 {
-            font-size: 1.25rem;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
-        }
-
-        .yml-indicator {
-            font-size: 0.8rem;
-            background: #f1f5f9;
-            padding: 4px 8px;
-            border-radius: 4px;
-            color: #475569;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 480px; box-shadow: var(--shadow); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h3 { font-size: 1.25rem; }
+        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
+        .form-group input { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; outline: none; }
+        .form-group input:focus { border-color: var(--primary); }
+        .yml-indicator { font-size: 0.8rem; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; color: #475569; margin-bottom: 1rem; display: inline-block; }
     </style>
 </head>
 <body>
@@ -340,7 +89,7 @@
     <div id="lock-screen">
         <h2>Control System</h2>
         <p>Masukkan 6 digit PIN Akses</p>
-        <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus>
+        <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="******" autofocus autocomplete="off">
         <button id="pin-btn" class="btn-submit" onclick="unlockDashboard()">Masuk</button>
         <div id="error-msg" class="error-msg">PIN Salah! Silakan coba lagi.</div>
     </div>
@@ -361,7 +110,6 @@
                     <div class="card-desc">Target Workflow: livefixtertinggi.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('2. Live Fix Agust Logo Kiri Atas', 'Scriptpercobaan.yml')">
                 <span class="card-number">02</span>
                 <div class="card-content">
@@ -370,7 +118,6 @@
                     <div class="card-desc">Target Workflow: Scriptpercobaan.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('3. Live Khusus Habib Umar', 'scriptkhususlivehabibomarcom.yml')">
                 <span class="card-number">03</span>
                 <div class="card-content">
@@ -379,7 +126,6 @@
                     <div class="card-desc">Target Workflow: scriptkhususlivehabibomarcom.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('4. Live Server 4', 'live4.yml')">
                 <span class="card-number">04</span>
                 <div class="card-content">
@@ -388,7 +134,6 @@
                     <div class="card-desc">Target Workflow: live4.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('5. Live Server 5', 'live5.yml')">
                 <span class="card-number">05</span>
                 <div class="card-content">
@@ -397,7 +142,6 @@
                     <div class="card-desc">Target Workflow: live5.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('6. Live Server 6', 'live6.yml')">
                 <span class="card-number">06</span>
                 <div class="card-content">
@@ -406,7 +150,6 @@
                     <div class="card-desc">Target Workflow: live6.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('7. Live Server 7', 'live7.yml')">
                 <span class="card-number">07</span>
                 <div class="card-content">
@@ -415,7 +158,6 @@
                     <div class="card-desc">Target Workflow: live7.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('8. Live Server 8', 'live8.yml')">
                 <span class="card-number">08</span>
                 <div class="card-content">
@@ -424,7 +166,6 @@
                     <div class="card-desc">Target Workflow: live8.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('9. Live Server 9', 'live9.yml')">
                 <span class="card-number">09</span>
                 <div class="card-content">
@@ -433,7 +174,6 @@
                     <div class="card-desc">Target Workflow: live9.yml</div>
                 </div>
             </div>
-
             <div class="card" onclick="openModal('10. Live Server 10', 'live10.yml')">
                 <span class="card-number">10</span>
                 <div class="card-content">
@@ -444,11 +184,10 @@
             </div>
         </div>
 
-        <!-- RIWAYAT WORKFLOWS -->
         <div class="history-section">
             <div class="history-header">
                 <h2>Riwayat Workflow / Stream Aktif</h2>
-                <button onclick="loadHistory()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.85rem;">Refresh Riwayat</button>
+                <button onclick="loadHistory()" style="background:none; border:none; color:var(--primary); cursor:pointer; font-size:0.85rem; font-weight:600;">Refresh Riwayat</button>
             </div>
             <div id="history-list" class="history-list">
                 <p style="text-align:center; color:var(--text-muted);">Memuat riwayat...</p>
@@ -463,29 +202,21 @@
                 <h3 id="modal-title">Judul Live</h3>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            
-            <div class="yml-indicator">
-                Target Action: <strong id="yml-display">filename.yml</strong>
-            </div>
-
+            <div class="yml-indicator">Target Action: <strong id="yml-display">filename.yml</strong></div>
             <form id="live-form" onsubmit="triggerGithubAction(event)">
                 <input type="hidden" id="selected-yml">
-                
                 <div class="form-group">
                     <label for="live-name">Nama / Judul Live (Opsional)</label>
                     <input type="text" id="live-name" placeholder="Contoh: Majlis Rutin (Kosongkan = Untitled)">
                 </div>
-
                 <div class="form-group">
                     <label for="yt-url">Link Sumber Video YouTube</label>
                     <input type="url" id="yt-url" placeholder="https://www.youtube.com/watch?v=..." required>
                 </div>
-                
                 <div class="form-group">
                     <label for="rtmp-key">Key RTMP (Stream Key)</label>
                     <input type="password" id="rtmp-key" placeholder="xxxx-xxxx-xxxx-xxxx" required>
                 </div>
-                
                 <button type="submit" class="btn-submit" id="submit-btn">Jalankan Live</button>
             </form>
         </div>
@@ -494,8 +225,17 @@
     <script>
         let userPin = "";
 
+        // Otomatis verifikasi saat 6 digit PIN dimasukkan
+        document.getElementById('pin-input').addEventListener('input', function () {
+            document.getElementById('error-msg').style.display = 'none';
+            if (this.value.trim().length === 6) {
+                unlockDashboard();
+            }
+        });
+
         async function unlockDashboard() {
-            const input = document.getElementById('pin-input').value;
+            const inputEl = document.getElementById('pin-input');
+            const input = inputEl.value.trim();
             const errorMsg = document.getElementById('error-msg');
             const btn = document.getElementById('pin-btn');
 
@@ -515,19 +255,22 @@
                     body: JSON.stringify({ pin: input })
                 });
 
-                if (response.ok) {
+                const data = await response.json().catch(() => ({}));
+
+                if (response.ok && data.success) {
                     userPin = input;
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     errorMsg.style.display = 'none';
                     loadHistory();
                 } else {
-                    errorMsg.innerText = "PIN Salah!";
+                    errorMsg.innerText = data.message || "PIN Salah!";
                     errorMsg.style.display = 'block';
-                    document.getElementById('pin-input').value = "";
+                    inputEl.value = "";
+                    inputEl.focus();
                 }
             } catch (error) {
-                errorMsg.innerText = "Terjadi kesalahan koneksi.";
+                errorMsg.innerText = "Gagal terhubung ke server.";
                 errorMsg.style.display = 'block';
             } finally {
                 btn.innerText = "Masuk";
@@ -541,10 +284,6 @@
             document.getElementById('lock-screen').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
         }
-
-        document.getElementById('pin-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') unlockDashboard();
-        });
 
         function openModal(title, ymlFile) {
             document.getElementById('modal-title').innerText = title;
@@ -583,19 +322,68 @@
                     })
                 });
 
-                const result = await response.json();
+                const result = await response.json().catch(() => ({}));
 
-                if (response.ok) {
+                if (response.ok && result.success) {
                     alert(`BERHASIL!\n\n${result.message}`);
                     closeModal();
                     setTimeout(loadHistory, 2000);
                 } else {
-                    alert(`GAGAL: ${result.message}`);
+                    alert(`GAGAL: ${result.message || 'Terjadi kesalahan'}`);
                     if (response.status === 401) logout();
                 }
             } catch (error) {
-                console.error(error);
                 alert("Terjadi kesalahan koneksi server.");
             } finally {
                 btn.innerText = "Jalankan Live";
- 
+                btn.disabled = false;
+            }
+        }
+
+        async function loadHistory() {
+            const listEl = document.getElementById('history-list');
+            try {
+                const response = await fetch('/api/history', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: userPin })
+                });
+
+                if (!response.ok) {
+                    listEl.innerHTML = `<p style="text-align:center; color:var(--danger);">Gagal memuat riwayat.</p>`;
+                    return;
+                }
+
+                const data = await response.json();
+                if (!Array.isArray(data) || data.length === 0) {
+                    listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted);">Belum ada riwayat workflow.</p>`;
+                    return;
+                }
+
+                listEl.innerHTML = data.map(item => `
+                    <div class="history-item">
+                        <div class="history-info">
+                            <div class="history-title">${item.title}</div>
+                            <div class="history-meta">Workflow: ${item.yml} | Waktu: ${item.time} | Status: <strong>${item.status}</strong></div>
+                        </div>
+                        ${item.status === 'in_progress' || item.status === 'queued' ? 
+                            `<button class="btn-cancel" onclick="cancelWorkflow(${item.runId})">Berhenti Live</button>` : 
+                            `<span style="font-size:0.8rem; color:var(--text-muted);">${item.status}</span>`}
+                    </div>
+                `).join('');
+            } catch (err) {
+                listEl.innerHTML = `<p style="text-align:center; color:var(--danger);">Terjadi kesalahan koneksi.</p>`;
+            }
+        }
+
+        async function cancelWorkflow(runId) {
+            if (!confirm("Apakah Anda yakin ingin menghentikan live stream ini?")) return;
+
+            try {
+                const response = await fetch('/api/cancel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin: userPin, runId: runId })
+                });
+
+                const 
